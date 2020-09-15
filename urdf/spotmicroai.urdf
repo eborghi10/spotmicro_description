@@ -4,6 +4,67 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="SpotMicroAI">
+  <!-- Body -->
+  <!-- Leg -->
+  <!-- Lidar Backpack -->
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://spotmicro_description/meshes/stl/rplidar_main.STL" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="1.57075 0 0" xyz="-0.06425 0.02885 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.0985 0.0577 0.07"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.50"/>
+      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+    </inertial>
+  </link>
+  <gazebo reference="lidar_link">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  <joint name="base_lidar" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.035"/>
+  </joint>
+  <!-- IMU -->
+  <gazebo>
+    <plugin filename="libhector_gazebo_ros_imu.so" name="imu_controller">
+      <updateRate>50.0</updateRate>
+      <bodyName>imu_link</bodyName>
+      <topicName>imu/data</topicName>
+      <accelDrift>0.005 0.005 0.005</accelDrift>
+      <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+      <rateDrift>0.005 0.005 0.005 </rateDrift>
+      <rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
+      <headingDrift>0.005</headingDrift>
+      <headingGaussianNoise>0.005</headingGaussianNoise>
+    </plugin>
+  </gazebo>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-09" ixy="0.0" ixz="0.0" iyy="1e-09" iyz="0.0" izz="1e-09"/>
+    </inertial>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+  </joint>
+  <!-- Body -->
+  <!-- Leg -->
+  <!-- This file is a placeholder which is included by default from
+      spotmicroai.urdf.xacro. If a robot is being customized and requires
+      additional URDF, set the SPOT_URDF_EXTRAS environment variable
+      to the full path of the file you would like included. -->
   <material name="yellow">
     <color rgba="0.92 0.83 0.0 1"/>
   </material>
@@ -187,6 +248,16 @@
     <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="front_left_shoulder_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_left_shoulder">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_left_shoulder_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="front_left_leg" type="revolute">
     <parent link="front_left_shoulder_link"/>
     <child link="front_left_leg_link"/>
@@ -195,6 +266,16 @@
     <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+  <transmission name="front_left_leg_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_left_leg">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_left_leg_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="front_left_leg_cover_joint" type="fixed">
     <parent link="front_left_leg_link"/>
     <child link="front_left_leg_link_cover"/>
@@ -208,6 +289,16 @@
     <limit effort="1000.0" lower="-0.1" upper="2.59" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="front_left_foot_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_left_foot">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_left_foot_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="front_left_toe" type="fixed">
     <parent link="front_left_foot_link"/>
     <child link="front_left_toe_link"/>
@@ -310,6 +401,16 @@
     <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="front_right_shoulder_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_right_shoulder">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_right_shoulder_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="front_right_leg" type="revolute">
     <parent link="front_right_shoulder_link"/>
     <child link="front_right_leg_link"/>
@@ -318,6 +419,16 @@
     <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+  <transmission name="front_right_leg_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_right_leg">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_right_leg_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="front_right_leg_cover_joint" type="fixed">
     <parent link="front_right_leg_link"/>
     <child link="front_right_leg_link_cover"/>
@@ -331,6 +442,16 @@
     <limit effort="1000.0" lower="-0.1" upper="2.59" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="front_right_foot_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_right_foot">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_right_foot_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="front_right_toe" type="fixed">
     <parent link="front_right_foot_link"/>
     <child link="front_right_toe_link"/>
@@ -433,6 +554,16 @@
     <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="rear_left_shoulder_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_shoulder">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_left_shoulder_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="rear_left_leg" type="revolute">
     <parent link="rear_left_shoulder_link"/>
     <child link="rear_left_leg_link"/>
@@ -441,6 +572,16 @@
     <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+  <transmission name="rear_left_leg_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_leg">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_left_leg_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="rear_left_leg_cover_joint" type="fixed">
     <parent link="rear_left_leg_link"/>
     <child link="rear_left_leg_link_cover"/>
@@ -454,6 +595,16 @@
     <limit effort="1000.0" lower="-0.1" upper="2.59" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="rear_left_foot_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_left_foot">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_left_foot_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="rear_left_toe" type="fixed">
     <parent link="rear_left_foot_link"/>
     <child link="rear_left_toe_link"/>
@@ -556,6 +707,16 @@
     <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="rear_right_shoulder_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_shoulder">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_right_shoulder_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="rear_right_leg" type="revolute">
     <parent link="rear_right_shoulder_link"/>
     <child link="rear_right_leg_link"/>
@@ -564,6 +725,16 @@
     <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
+  <transmission name="rear_right_leg_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_leg">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_right_leg_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="rear_right_leg_cover_joint" type="fixed">
     <parent link="rear_right_leg_link"/>
     <child link="rear_right_leg_link_cover"/>
@@ -577,10 +748,38 @@
     <limit effort="1000.0" lower="-0.1" upper="2.59" velocity="0.5"/>
     <dynamics damping="0.0" friction="0.5"/>
   </joint>
+  <transmission name="rear_right_foot_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rear_right_foot">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rear_right_foot_actuator">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="rear_right_toe" type="fixed">
     <parent link="rear_right_foot_link"/>
     <child link="rear_right_toe_link"/>
     <origin xyz="0 0 -0.13"/>
   </joint>
+  <!-- Optional custom includes. -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>odom/ground_truth</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+  <gazebo>
+    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
 </robot>
 
