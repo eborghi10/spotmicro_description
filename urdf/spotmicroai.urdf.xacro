@@ -261,6 +261,9 @@
          <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
       </inertial>
    </link>
+   <gazebo reference="base_inertia">
+      <material>Gazebo/FlatBlack</material>
+   </gazebo>
    <joint name="base_inertia_joint" type="fixed">
       <parent link="base_link" />
       <child link="base_inertia" />
@@ -268,9 +271,16 @@
    <link name="rear_link">
       <visual>
          <geometry>
-            <mesh filename="package://spotmicro_description/meshes/stl/backpart.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="package://spotmicro_description/meshes/stl/Cover_Rear_Plain.stl" scale="0.001 0.001 0.001" />
          </geometry>
-         <origin rpy="0 0 3.1416" xyz="0.042 0.055 -0.0195" />
+         <origin rpy="0 1.57 0" xyz="-0.115 0 -0.006" />
+         <material name="yellow" />
+      </visual>
+      <visual>
+         <geometry>
+            <mesh filename="package://spotmicro_description/meshes/stl/B_cover.stl" scale="0.001 0.001 0.001" />
+         </geometry>
+         <origin rpy="1.57 0 3.1416" xyz="0 0 -0.04" />
          <material name="yellow" />
       </visual>
       <collision>
@@ -294,9 +304,9 @@
    <link name="front_link">
       <visual>
          <geometry>
-            <mesh filename="package://spotmicro_description/meshes/stl/frontpart.stl" scale="0.001 0.001 0.001" />
+            <mesh filename="package://spotmicro_description/meshes/stl/Cover_Nose_Realsense.STL" scale="0.001 0.001 0.001" />
          </geometry>
-         <origin rpy="0 0 3.1416" xyz="0.042 0.055 -0.0205" />
+         <origin rpy="3.1416 0 0" xyz="0.13 -0.001 -0.01" />
          <material name="yellow" />
       </visual>
       <collision>
@@ -317,9 +327,15 @@
       <parent link="base_link" />
       <child link="front_link" />
    </joint>
+
    <!-- create Legs -->
    <xacro:gen_full_leg_joint pos="front_left" shiftx="${shiftx}" shifty="${shifty}" shift="${shift}" left="true" />
    <xacro:gen_full_leg_joint pos="front_right" shiftx="${shiftx}" shifty="-${shifty}" shift="-${shift}" left="false" />
    <xacro:gen_full_leg_joint pos="rear_left" shiftx="-${shiftx}" shifty="${shifty}" shift="${shift}" left="true" />
    <xacro:gen_full_leg_joint pos="rear_right" shiftx="-${shiftx}" shifty="-${shifty}" shift="-${shift}" left="false" />
+
+   <!-- Accessories -->
+   <xacro:include filename="$(find spotmicro_description)/urdf/accessories.urdf.xacro" />
+   <xacro:accessories base_name="base_link"/>
+
 </robot>
