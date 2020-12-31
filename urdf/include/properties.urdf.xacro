@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<!-- Materials -->
+<material name="yellow">
+    <color rgba="0.92 0.83 0.0 1" />
+</material>
+<material name="black">
+    <color rgba="0.1 0.1 0.1 1" />
+</material>
+<material name="grey">
+    <color rgba="0.6 0.6 0.6 1" />
+</material>
+
+<!-- Params -->
+<xacro:property name="body_length"     value="0.140" />
+<xacro:property name="body_width"      value="0.110" />
+<xacro:property name="body_height"     value="0.070" />
+<xacro:property name="body_mass"       value="2.800"/>
+
+<xacro:property name="front_length"    value="0.058" />
+<xacro:property name="front_mass"      value="0.150"/>
+
+<xacro:property name="rear_length"     value="0.040" />
+<xacro:property name="rear_mass"       value="0.150"/>
+
+<xacro:property name="shoulder_length" value="0.044" />
+<xacro:property name="shoulder_width"  value="0.038" />
+<xacro:property name="shoulder_mass"   value="0.150"/>
+
+<xacro:property name="leg_length"      value="0.109" />
+<xacro:property name="leg_width"       value="0.028"/>
+<xacro:property name="leg_height"      value="0.036"/>
+<xacro:property name="leg_mass"        value="0.100"/>
+
+<xacro:property name="foot_length"     value="0.080" />
+<xacro:property name="foot_width"      value="0.020"/>
+<xacro:property name="foot_height"     value="0.026"/>
+<xacro:property name="foot_mass"       value="0.100"/>
+
+<xacro:property name="toe_radius"      value="0.020" />
+<xacro:property name="toe_mass"        value="0.10" />
+
+<xacro:property name="shift"           value="0.055" />
+<xacro:property name="shiftx"          value="0.093" />
+<xacro:property name="shifty"          value="0.0395" />
+
+</robot>

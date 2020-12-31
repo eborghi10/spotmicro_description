@@ -4,6 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="SpotMicroAI">
+  <!-- Materials -->
   <material name="yellow">
     <color rgba="0.92 0.83 0.0 1"/>
   </material>
@@ -27,17 +28,15 @@
       <geometry>
         <box size="0.14 0.11 0.07"/>
       </geometry>
-      <origin rpy="0 0 3.1416" xyz="0 0 0"/>
+      <origin rpy="0 0 3.1416"/>
     </collision>
     <inertial>
-      <mass value="2.80"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <mass value="2.8"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.00396666666667" ixy="0.0" ixz="0.0" iyy="0.00571666666667" iyz="0.0" izz="0.00739666666667"/>
     </inertial>
   </link>
-  <gazebo reference="base_inertia">
-    <material>Gazebo/FlatBlack</material>
-  </gazebo>
-  <joint name="base_inertia_joint" type="fixed">
+  <joint name="base_link_to_base_inertia" type="fixed">
     <parent link="base_link"/>
     <child link="base_inertia"/>
   </joint>
@@ -60,11 +59,12 @@
       <geometry>
         <box size="0.04 0.11 0.07"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="-0.135 0 0"/>
+      <origin xyz="-0.135 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.20"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <origin xyz="-0.135 0 0"/>
+      <mass value="0.15"/>
+      <inertia ixx="0.0002125" ixy="0.0" ixz="0.0" iyy="8.125e-05" iyz="0.0" izz="0.00017125"/>
     </inertial>
   </link>
   <joint name="base_rear" type="fixed">
@@ -86,11 +86,12 @@
       <geometry>
         <box size="0.058 0.11 0.07"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0.135 0 0"/>
+      <origin xyz="0.135 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.20"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <origin xyz="0.135 0 0"/>
+      <mass value="0.15"/>
+      <inertia ixx="0.0002125" ixy="0.0" ixz="0.0" iyy="0.0001033" iyz="0.0" izz="0.0001933"/>
     </inertial>
   </link>
   <gazebo reference="front_link">
@@ -112,21 +113,12 @@
       <geometry>
         <box size="0.044 0.038 0.07"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.10"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <mass value="0.15"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="7.93e-05" ixy="0.0" ixz="0.0" iyy="8.545e-05" iyz="0.0" izz="4.225e-05"/>
     </inertial>
-  </link>
-  <link name="front_left_leg_link_cover">
-    <visual>
-      <geometry>
-        <mesh filename="package://spotmicro_description/meshes/stl/larm_cover.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1416" xyz="0.134 -0.04 -0.0095"/>
-      <material name="yellow"/>
-    </visual>
   </link>
   <link name="front_left_leg_link">
     <visual>
@@ -136,19 +128,33 @@
       <origin rpy="0 0 3.1416" xyz="0.134 -0.04 -0.0095"/>
       <material name="black"/>
     </visual>
+    <!-- Visual cover -->
+    <visual>
+      <geometry>
+        <mesh filename="package://spotmicro_description/meshes/stl/larm_cover.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 3.1416" xyz="0.134 -0.04 -0.0095"/>
+      <material name="yellow"/>
+    </visual>
     <collision>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
       <geometry>
         <box size="0.028 0.036 0.109"/>
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.15"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <origin xyz="0 0 -0.050"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000109808333333" ixy="0.0" ixz="0.0" iyy="0.000105541666667" iyz="0.0" izz="1.73333333333e-05"/>
     </inertial>
   </link>
-  <gazebo reference="front_left_leg_link_cover">
-    <material>Gazebo/ZincYellow</material>
+  <gazebo reference="front_left_leg_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
   </gazebo>
   <link name="front_left_foot_link">
     <visual>
@@ -160,13 +166,14 @@
     </visual>
     <collision>
       <geometry>
-        <box size="0.026 0.020 0.13"/>
+        <box size="0.026 0.02 0.08"/>
       </geometry>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
     </collision>
     <inertial>
+      <origin xyz="0 0 -0.050"/>
       <mass value="0.1"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <inertia ixx="5.66666666667e-05" ixy="0.0" ixz="0.0" iyy="5.89666666667e-05" iyz="0.0" izz="8.96666666667e-06"/>
     </inertial>
   </link>
   <link name="front_left_toe_link">
@@ -181,21 +188,27 @@
       <geometry>
         <sphere radius="0.02"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <contact_coefficients mu="1.1"/>
     </collision>
     <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1.6e-05" ixy="0.0" ixz="0.0" iyy="1.6e-05" iyz="0.0" izz="1.6e-05"/>
     </inertial>
   </link>
+  <gazebo reference="front_left_toe_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
+  </gazebo>
   <joint name="front_left_shoulder" type="revolute">
     <parent link="base_link"/>
     <child link="front_left_shoulder_link"/>
     <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="0.093 0.0395 0"/>
-    <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-0.548" upper="0.548" velocity="1.5"/>
   </joint>
   <transmission name="front_left_shoulder_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -211,9 +224,8 @@
     <parent link="front_left_shoulder_link"/>
     <child link="front_left_leg_link"/>
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0 0.055 0"/>
-    <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <origin xyz="0 0.055 0"/>
+    <limit effort="25.0" lower="-2.666" upper="1.548" velocity="1.5"/>
   </joint>
   <transmission name="front_left_leg_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -225,18 +237,12 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <joint name="front_left_leg_cover_joint" type="fixed">
-    <parent link="front_left_leg_link"/>
-    <child link="front_left_leg_link_cover"/>
-    <origin xyz="0 0 0"/>
-  </joint>
   <joint name="front_left_foot" type="revolute">
     <parent link="front_left_leg_link"/>
     <child link="front_left_foot_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.014 0 -0.109"/>
-    <limit effort="1000.0" lower="-2.59" upper="0.1" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-2.59" upper="0.1" velocity="1.5"/>
   </joint>
   <transmission name="front_left_foot_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -265,21 +271,12 @@
       <geometry>
         <box size="0.044 0.038 0.07"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.10"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <mass value="0.15"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="7.93e-05" ixy="0.0" ixz="0.0" iyy="8.545e-05" iyz="0.0" izz="4.225e-05"/>
     </inertial>
-  </link>
-  <link name="front_right_leg_link_cover">
-    <visual>
-      <geometry>
-        <mesh filename="package://spotmicro_description/meshes/stl/rarm_cover.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1416" xyz="0.134 0.149 -0.0095"/>
-      <material name="yellow"/>
-    </visual>
   </link>
   <link name="front_right_leg_link">
     <visual>
@@ -289,19 +286,33 @@
       <origin rpy="0 0 3.1416" xyz="0.134 0.149 -0.0095"/>
       <material name="black"/>
     </visual>
+    <!-- Visual cover -->
+    <visual>
+      <geometry>
+        <mesh filename="package://spotmicro_description/meshes/stl/rarm_cover.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 3.1416" xyz="0.134 0.149 -0.0095"/>
+      <material name="yellow"/>
+    </visual>
     <collision>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
       <geometry>
         <box size="0.028 0.036 0.109"/>
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.15"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <origin xyz="0 0 -0.050"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000109808333333" ixy="0.0" ixz="0.0" iyy="0.000105541666667" iyz="0.0" izz="1.73333333333e-05"/>
     </inertial>
   </link>
-  <gazebo reference="front_right_leg_link_cover">
-    <material>Gazebo/ZincYellow</material>
+  <gazebo reference="front_right_leg_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
   </gazebo>
   <link name="front_right_foot_link">
     <visual>
@@ -313,13 +324,14 @@
     </visual>
     <collision>
       <geometry>
-        <box size="0.026 0.020 0.13"/>
+        <box size="0.026 0.02 0.08"/>
       </geometry>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
     </collision>
     <inertial>
+      <origin xyz="0 0 -0.050"/>
       <mass value="0.1"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <inertia ixx="5.66666666667e-05" ixy="0.0" ixz="0.0" iyy="5.89666666667e-05" iyz="0.0" izz="8.96666666667e-06"/>
     </inertial>
   </link>
   <link name="front_right_toe_link">
@@ -334,21 +346,27 @@
       <geometry>
         <sphere radius="0.02"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <contact_coefficients mu="1.1"/>
     </collision>
     <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1.6e-05" ixy="0.0" ixz="0.0" iyy="1.6e-05" iyz="0.0" izz="1.6e-05"/>
     </inertial>
   </link>
+  <gazebo reference="front_right_toe_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
+  </gazebo>
   <joint name="front_right_shoulder" type="revolute">
     <parent link="base_link"/>
     <child link="front_right_shoulder_link"/>
     <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="0.093 -0.0395 0"/>
-    <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-0.548" upper="0.548" velocity="1.5"/>
   </joint>
   <transmission name="front_right_shoulder_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -364,9 +382,8 @@
     <parent link="front_right_shoulder_link"/>
     <child link="front_right_leg_link"/>
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0 -0.055 0"/>
-    <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <origin xyz="0 -0.055 0"/>
+    <limit effort="25.0" lower="-2.666" upper="1.548" velocity="1.5"/>
   </joint>
   <transmission name="front_right_leg_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -378,18 +395,12 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <joint name="front_right_leg_cover_joint" type="fixed">
-    <parent link="front_right_leg_link"/>
-    <child link="front_right_leg_link_cover"/>
-    <origin xyz="0 0 0"/>
-  </joint>
   <joint name="front_right_foot" type="revolute">
     <parent link="front_right_leg_link"/>
     <child link="front_right_foot_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.014 0 -0.109"/>
-    <limit effort="1000.0" lower="-2.59" upper="0.1" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-2.59" upper="0.1" velocity="1.5"/>
   </joint>
   <transmission name="front_right_foot_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -418,21 +429,12 @@
       <geometry>
         <box size="0.044 0.038 0.07"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.10"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <mass value="0.15"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="7.93e-05" ixy="0.0" ixz="0.0" iyy="8.545e-05" iyz="0.0" izz="4.225e-05"/>
     </inertial>
-  </link>
-  <link name="rear_left_leg_link_cover">
-    <visual>
-      <geometry>
-        <mesh filename="package://spotmicro_description/meshes/stl/larm_cover.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1416" xyz="0.134 -0.04 -0.0095"/>
-      <material name="yellow"/>
-    </visual>
   </link>
   <link name="rear_left_leg_link">
     <visual>
@@ -442,19 +444,33 @@
       <origin rpy="0 0 3.1416" xyz="0.134 -0.04 -0.0095"/>
       <material name="black"/>
     </visual>
+    <!-- Visual cover -->
+    <visual>
+      <geometry>
+        <mesh filename="package://spotmicro_description/meshes/stl/larm_cover.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 3.1416" xyz="0.134 -0.04 -0.0095"/>
+      <material name="yellow"/>
+    </visual>
     <collision>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
       <geometry>
         <box size="0.028 0.036 0.109"/>
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.15"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <origin xyz="0 0 -0.050"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000109808333333" ixy="0.0" ixz="0.0" iyy="0.000105541666667" iyz="0.0" izz="1.73333333333e-05"/>
     </inertial>
   </link>
-  <gazebo reference="rear_left_leg_link_cover">
-    <material>Gazebo/ZincYellow</material>
+  <gazebo reference="rear_left_leg_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
   </gazebo>
   <link name="rear_left_foot_link">
     <visual>
@@ -466,13 +482,14 @@
     </visual>
     <collision>
       <geometry>
-        <box size="0.026 0.020 0.13"/>
+        <box size="0.026 0.02 0.08"/>
       </geometry>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
     </collision>
     <inertial>
+      <origin xyz="0 0 -0.050"/>
       <mass value="0.1"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <inertia ixx="5.66666666667e-05" ixy="0.0" ixz="0.0" iyy="5.89666666667e-05" iyz="0.0" izz="8.96666666667e-06"/>
     </inertial>
   </link>
   <link name="rear_left_toe_link">
@@ -487,21 +504,27 @@
       <geometry>
         <sphere radius="0.02"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <contact_coefficients mu="1.1"/>
     </collision>
     <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1.6e-05" ixy="0.0" ixz="0.0" iyy="1.6e-05" iyz="0.0" izz="1.6e-05"/>
     </inertial>
   </link>
+  <gazebo reference="rear_left_toe_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
+  </gazebo>
   <joint name="rear_left_shoulder" type="revolute">
     <parent link="base_link"/>
     <child link="rear_left_shoulder_link"/>
     <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="-0.093 0.0395 0"/>
-    <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-0.548" upper="0.548" velocity="1.5"/>
   </joint>
   <transmission name="rear_left_shoulder_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -517,9 +540,8 @@
     <parent link="rear_left_shoulder_link"/>
     <child link="rear_left_leg_link"/>
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0 0.055 0"/>
-    <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <origin xyz="0 0.055 0"/>
+    <limit effort="25.0" lower="-2.666" upper="1.548" velocity="1.5"/>
   </joint>
   <transmission name="rear_left_leg_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -531,18 +553,12 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <joint name="rear_left_leg_cover_joint" type="fixed">
-    <parent link="rear_left_leg_link"/>
-    <child link="rear_left_leg_link_cover"/>
-    <origin xyz="0 0 0"/>
-  </joint>
   <joint name="rear_left_foot" type="revolute">
     <parent link="rear_left_leg_link"/>
     <child link="rear_left_foot_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.014 0 -0.109"/>
-    <limit effort="1000.0" lower="-2.59" upper="0.1" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-2.59" upper="0.1" velocity="1.5"/>
   </joint>
   <transmission name="rear_left_foot_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -571,21 +587,12 @@
       <geometry>
         <box size="0.044 0.038 0.07"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
     <inertial>
-      <mass value="0.10"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <mass value="0.15"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="7.93e-05" ixy="0.0" ixz="0.0" iyy="8.545e-05" iyz="0.0" izz="4.225e-05"/>
     </inertial>
-  </link>
-  <link name="rear_right_leg_link_cover">
-    <visual>
-      <geometry>
-        <mesh filename="package://spotmicro_description/meshes/stl/rarm_cover.stl" scale="0.001 0.001 0.001"/>
-      </geometry>
-      <origin rpy="0 0 3.1416" xyz="0.134 0.149 -0.0095"/>
-      <material name="yellow"/>
-    </visual>
   </link>
   <link name="rear_right_leg_link">
     <visual>
@@ -595,19 +602,33 @@
       <origin rpy="0 0 3.1416" xyz="0.134 0.149 -0.0095"/>
       <material name="black"/>
     </visual>
+    <!-- Visual cover -->
+    <visual>
+      <geometry>
+        <mesh filename="package://spotmicro_description/meshes/stl/rarm_cover.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 3.1416" xyz="0.134 0.149 -0.0095"/>
+      <material name="yellow"/>
+    </visual>
     <collision>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
       <geometry>
         <box size="0.028 0.036 0.109"/>
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.15"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <origin xyz="0 0 -0.050"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.000109808333333" ixy="0.0" ixz="0.0" iyy="0.000105541666667" iyz="0.0" izz="1.73333333333e-05"/>
     </inertial>
   </link>
-  <gazebo reference="rear_right_leg_link_cover">
-    <material>Gazebo/ZincYellow</material>
+  <gazebo reference="rear_right_leg_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
   </gazebo>
   <link name="rear_right_foot_link">
     <visual>
@@ -619,13 +640,14 @@
     </visual>
     <collision>
       <geometry>
-        <box size="0.026 0.020 0.13"/>
+        <box size="0.026 0.02 0.08"/>
       </geometry>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.050"/>
+      <origin xyz="0 0 -0.050"/>
     </collision>
     <inertial>
+      <origin xyz="0 0 -0.050"/>
       <mass value="0.1"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <inertia ixx="5.66666666667e-05" ixy="0.0" ixz="0.0" iyy="5.89666666667e-05" iyz="0.0" izz="8.96666666667e-06"/>
     </inertial>
   </link>
   <link name="rear_right_toe_link">
@@ -640,21 +662,27 @@
       <geometry>
         <sphere radius="0.02"/>
       </geometry>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <contact_coefficients mu="1.1"/>
     </collision>
     <inertial>
-      <mass value="0.05"/>
-      <inertia ixx="1000" ixy="0" ixz="0" iyy="1000" iyz="0" izz="1000"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1.6e-05" ixy="0.0" ixz="0.0" iyy="1.6e-05" iyz="0.0" izz="1.6e-05"/>
     </inertial>
   </link>
+  <gazebo reference="rear_right_toe_link">
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <maxVel>0.0</maxVel>
+    <minDepth>0.001</minDepth>
+  </gazebo>
   <joint name="rear_right_shoulder" type="revolute">
     <parent link="base_link"/>
     <child link="rear_right_shoulder_link"/>
     <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="-0.093 -0.0395 0"/>
-    <limit effort="1000.0" lower="-0.548" upper="0.548" velocity="0.7"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-0.548" upper="0.548" velocity="1.5"/>
   </joint>
   <transmission name="rear_right_shoulder_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -670,9 +698,8 @@
     <parent link="rear_right_shoulder_link"/>
     <child link="rear_right_leg_link"/>
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0 -0.055 0"/>
-    <limit effort="1000.0" lower="-2.666" upper="1.548" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <origin xyz="0 -0.055 0"/>
+    <limit effort="25.0" lower="-2.666" upper="1.548" velocity="1.5"/>
   </joint>
   <transmission name="rear_right_leg_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -684,18 +711,12 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <joint name="rear_right_leg_cover_joint" type="fixed">
-    <parent link="rear_right_leg_link"/>
-    <child link="rear_right_leg_link_cover"/>
-    <origin xyz="0 0 0"/>
-  </joint>
   <joint name="rear_right_foot" type="revolute">
     <parent link="rear_right_leg_link"/>
     <child link="rear_right_foot_link"/>
     <axis xyz="0 1 0"/>
     <origin rpy="0 0 0" xyz="0.014 0 -0.109"/>
-    <limit effort="1000.0" lower="-2.59" upper="0.1" velocity="0.5"/>
-    <dynamics damping="0.0" friction="0.5"/>
+    <limit effort="25.0" lower="-2.59" upper="0.1" velocity="1.5"/>
   </joint>
   <transmission name="rear_right_foot_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -712,6 +733,63 @@
     <child link="rear_right_toe_link"/>
     <origin xyz="0 0 -0.13"/>
   </joint>
+  <joint name="hokuyo_joint" type="fixed">
+    <origin xyz="0 0 0.04"/>
+    <parent link="base_link"/>
+    <child link="hokuyo_frame"/>
+  </joint>
+  <link name="hokuyo_frame">
+    <inertial>
+      <mass value="0.270"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="2.632e-4" ixy="0" ixz="0" iyy="2.632e-4" iyz="0" izz="1.62e-4"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hector_sensors_description/meshes/hokuyo_utm30lx/hokuyo_utm_30lx.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 -0.0115"/>
+      <geometry>
+        <box size="0.058 0.058 0.087"/>
+        <!--<mesh filename="package://hector_sensors_description/meshes/hokuyo_utm30lx/hokuyo_utm_30lx.stl"/>-->
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="hokuyo_frame">
+    <sensor name="hokuyo" type="ray">
+      <always_on>true</always_on>
+      <update_rate>30</update_rate>
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>1040</samples>
+            <resolution>1</resolution>
+            <min_angle>2.26892802759</min_angle>
+            <max_angle>-2.26892802759</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.2</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.004</stddev>
+        </noise>
+      </ray>
+      <plugin filename="libgazebo_ros_laser.so" name="gazebo_ros_hokuyo_controller">
+        <topicName>scan</topicName>
+        <frameName>hokuyo_frame</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
   <material name="aluminum">
     <color rgba="0.5 0.5 0.5 1"/>
   </material>
@@ -860,5 +938,22 @@
     <child link="imu_link"/>
     <origin rpy="1.57 0 0" xyz="0.02 -0.04 0"/>
   </joint>
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>odom/ground_truth</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+  <gazebo>
+    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
 </robot>
 

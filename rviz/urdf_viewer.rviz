@@ -75,11 +75,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        front_left_leg_link_cover:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         front_left_shoulder_link:
           Alpha: 1
           Show Axes: false
@@ -101,11 +96,6 @@ Visualization Manager:
           Show Trail: false
           Value: true
         front_right_leg_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_right_leg_link_cover:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -135,11 +125,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        rear_left_leg_link_cover:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         rear_left_shoulder_link:
           Alpha: 1
           Show Axes: false
@@ -161,11 +146,6 @@ Visualization Manager:
           Show Trail: false
           Value: true
         rear_right_leg_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_right_leg_link_cover:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -204,8 +184,6 @@ Visualization Manager:
           Value: true
         front_left_leg_link:
           Value: true
-        front_left_leg_link_cover:
-          Value: true
         front_left_shoulder_link:
           Value: true
         front_left_toe_link:
@@ -215,8 +193,6 @@ Visualization Manager:
         front_right_foot_link:
           Value: true
         front_right_leg_link:
-          Value: true
-        front_right_leg_link_cover:
           Value: true
         front_right_shoulder_link:
           Value: true
@@ -228,8 +204,6 @@ Visualization Manager:
           Value: true
         rear_left_leg_link:
           Value: true
-        rear_left_leg_link_cover:
-          Value: true
         rear_left_shoulder_link:
           Value: true
         rear_left_toe_link:
@@ -239,8 +213,6 @@ Visualization Manager:
         rear_right_foot_link:
           Value: true
         rear_right_leg_link:
-          Value: true
-        rear_right_leg_link_cover:
           Value: true
         rear_right_shoulder_link:
           Value: true
@@ -258,8 +230,6 @@ Visualization Manager:
               front_left_foot_link:
                 front_left_toe_link:
                   {}
-              front_left_leg_link_cover:
-                {}
           front_link:
             {}
           front_right_shoulder_link:
@@ -267,8 +237,6 @@ Visualization Manager:
               front_right_foot_link:
                 front_right_toe_link:
                   {}
-              front_right_leg_link_cover:
-                {}
           lidar_link:
             {}
           rear_left_shoulder_link:
@@ -276,8 +244,6 @@ Visualization Manager:
               rear_left_foot_link:
                 rear_left_toe_link:
                   {}
-              rear_left_leg_link_cover:
-                {}
           rear_link:
             {}
           rear_right_shoulder_link:
@@ -285,8 +251,6 @@ Visualization Manager:
               rear_right_foot_link:
                 rear_right_toe_link:
                   {}
-              rear_right_leg_link_cover:
-                {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
