@@ -29,6 +29,10 @@
          </collision>
          <xacro:inertial_cuboid mass="${shoulder_mass}" x_length="${shoulder_length}" y_length="${shoulder_width}" z_length="${body_height}"/>
       </link>
+      <gazebo reference="${name}">
+         <mu1>100000.0</mu1>
+         <mu2>100000.0</mu2>
+      </gazebo>
    </xacro:macro>
    <xacro:macro name="gen_shoulder_joint" params="pos shiftx shifty">
       <joint name="${pos}_shoulder" type="revolute">
@@ -36,7 +40,8 @@
          <child link="${pos}_shoulder_link" />
          <axis xyz="1 0 0" />
          <origin rpy="0 0 0" xyz="${shiftx} ${shifty} 0" />
-         <limit effort="25.0" velocity="1.5" lower="-0.548" upper="0.548"/>
+         <limit effort="${effort_limit}" velocity="${velocity}" lower="-0.548" upper="0.548"/>
+         <dynamics friction="0.0" />
       </joint>
       <transmission name="${pos}_shoulder_trans">
          <type>transmission_interface/SimpleTransmission</type>
@@ -93,12 +98,9 @@
          </xacro:inertial_cuboid_with_pose>
       </link>
       <gazebo reference="${name}">
-         <kp>1000000.0</kp>
-         <kd>1.0</kd>
-         <mu1>0.8</mu1>
-         <mu2>0.8</mu2>
-         <maxVel>0.0</maxVel>
-         <minDepth>0.001</minDepth>
+         <mu1>100000.0</mu1>
+         <mu2>100000.0</mu2>
+         <material>Gazebo/Black</material>
       </gazebo>
    </xacro:macro>
    <xacro:macro name="gen_leg_joint" params="pos shift">
@@ -107,7 +109,8 @@
          <child link="${pos}_leg_link" />
          <axis xyz="0 1 0" />
          <origin xyz="0 ${shift} 0" />
-         <limit effort="25.0" velocity="1.5" lower="-2.666" upper="1.548"/>
+         <limit effort="${effort_limit}" velocity="${velocity}" lower="-2.666" upper="1.548"/>
+         <dynamics friction="0.0" />
       </joint>
       <transmission name="${pos}_leg_trans">
          <type>transmission_interface/SimpleTransmission</type>
@@ -147,6 +150,10 @@
             <origin xyz="0 0 -0.050" />
          </xacro:inertial_cuboid_with_pose>
       </link>
+      <gazebo reference="${name}">
+         <mu1>100000.0</mu1>
+         <mu2>100000.0</mu2>
+      </gazebo>
    </xacro:macro>
    <xacro:macro name="gen_foot_joint" params="pos">
       <joint name="${pos}_foot" type="revolute">
@@ -154,7 +161,8 @@
          <child link="${pos}_foot_link" />
          <axis xyz="0 1 0" />
          <origin rpy="0 0 0" xyz="0.014 0 -${leg_length}" />
-         <limit effort="25.0" velocity="1.5" lower="-2.59" upper="0.1"/>
+         <limit effort="${effort_limit}" velocity="${velocity}" lower="-2.59" upper="0.1"/>
+         <dynamics friction="0.0" />
       </joint>
       <transmission name="${pos}_foot_trans">
          <type>transmission_interface/SimpleTransmission</type>
@@ -184,12 +192,28 @@
          <xacro:inertial_sphere mass="${toe_mass}" diameter="${2*toe_radius}"/>
       </link>
       <gazebo reference="${name}">
-         <kp>1000000.0</kp>
-         <kd>1.0</kd>
-         <mu1>1.0</mu1>
-         <mu2>1.0</mu2>
-         <maxVel>0.0</maxVel>
-         <minDepth>0.001</minDepth>
+         <minDepth>0.0002</minDepth>
+         <collision name="${name}_collision_1">
+            <geometry>
+               <sphere>
+                  <radius>${toe_radius}</radius>
+               </sphere>
+            </geometry>
+            <surface>
+               <friction>
+                  <ode>
+                  <mu>100000.0</mu>
+                  <mu2>100000.0</mu2>
+                  </ode>
+                  <torsional>
+                  <coefficient>1000000</coefficient>
+                  <use_patch_radius>true</use_patch_radius>
+                  <surface_radius>${toe_radius}</surface_radius>
+                  <patch_radius>${toe_radius}</patch_radius>
+                  </torsional>
+               </friction>
+            </surface>
+         </collision>
       </gazebo>
    </xacro:macro>
    <xacro:macro name="gen_toe_joint" params="pos">
@@ -198,6 +222,10 @@
          <child link="${pos}_toe_link" />
          <origin xyz="0 0 -0.13" />
       </joint>
+      <gazebo reference="${pos}_toe">
+         <provideFeedback>true</provideFeedback>
+         <disableFixedJointLumping>true</disableFixedJointLumping>
+      </gazebo>
    </xacro:macro>
    <xacro:macro name="gen_full_leg_joint" params="pos shiftx shifty shift left">
       <xacro:gen_shoulder name="${pos}_shoulder_link" left="${left}" />
@@ -227,10 +255,18 @@
       </collision>
       <xacro:inertial_cuboid mass="${body_mass}" x_length="${body_length}" y_length="${body_width}" z_length="${body_height}"/>
    </link>
+   <gazebo reference="base_inertia">
+      <mu1>100000.0</mu1>
+      <mu2>100000.0</mu2>
+   </gazebo>
    <joint name="base_link_to_base_inertia" type="fixed">
       <parent link="base_link" />
       <child link="base_inertia" />
    </joint>
+   <gazebo reference="base_link_to_base_inertia">
+      <provideFeedback>true</provideFeedback>
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+  </gazebo>
    <link name="rear_link">
       <visual>
          <geometry>
